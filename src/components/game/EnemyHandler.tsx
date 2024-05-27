@@ -28,7 +28,7 @@ export default function EnemyHandler() {
 
   const obstacles = useMemo(() => {
     return weapons.map((weapon) => ({
-      position: weapon.position,
+      position: [weapon.position[0], weapon.position[2]] as [number, number],
       radius: weapon.radius,
     }));
   }, [weapons]);

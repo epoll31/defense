@@ -1,10 +1,13 @@
+import { Heuristic, getHeuristic } from "../utils/heuristics";
 import { Enemy, Weapon } from "../types";
 
 export function findTarget(
   weapon: Weapon,
   enemies: Enemy[],
-  heuristic: (enemy: Enemy) => number
+  heuristic?: Heuristic
 ): Enemy | null {
+  const trueHeuristic = heuristic || getHeuristic(weapon.focusMode);
+
   let min = Infinity;
   let target: Enemy | null = null;
   enemies.forEach((enemy) => {
@@ -14,12 +17,13 @@ export function findTarget(
 
     const dist = Math.hypot(
       enemy.position[0] - weapon.position[0],
-      enemy.position[2] - weapon.position[1]
+      enemy.position[2] - weapon.position[2]
     );
     if (dist > weapon.radius) {
       return;
     }
-    const h = heuristic(enemy);
+
+    const h = trueHeuristic(enemy, weapon);
     if (h < min) {
       min = h;
       target = enemy;

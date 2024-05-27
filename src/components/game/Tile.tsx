@@ -29,7 +29,7 @@ export function Tile({
       if (weaponSpawnState !== "sphere") return;
       console.log("Trying to spawn weapon at", position);
       const taken = weapons.find((weapon) =>
-        positionEquals(weapon.position, position)
+        positionEquals([weapon.position[0], weapon.position[2]], position)
       );
       if (taken) {
         console.log("Position already taken");
@@ -41,14 +41,22 @@ export function Tile({
             position: [enemy.position[0], enemy.position[2]],
           })),
           grid,
-          [...weapons, { position }]
+          [
+            ...weapons.map((weapon) => ({
+              position: [weapon.position[0], weapon.position[2]] as [
+                number,
+                number
+              ],
+            })),
+            { position },
+          ]
         )
       ) {
         console.log("No path to end");
         return;
       }
       console.log("Spawning weapon at", position);
-      spawnWeapon(position);
+      spawnWeapon([position[0], 0, position[1]]);
     },
     [position, weapons, spawnWeapon]
   );

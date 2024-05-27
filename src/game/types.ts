@@ -21,11 +21,12 @@ export const WeaponFocusModes = [
 export type WeaponFocusMode = (typeof WeaponFocusModes)[number];
 export interface Weapon {
   id: string;
-  position: [number, number];
   radius: number;
   focusMode: WeaponFocusMode;
   speed: number;
   damage: number;
+  position: [number, number, number];
+  direction: number;
 }
 
 export interface Grid {
